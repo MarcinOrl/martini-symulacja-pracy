@@ -83,8 +83,9 @@ func move_to_target():
 		velocity = move_and_slide(velocity)
 		
 func get_target_path(target_pos):
-	playerPos = target_pos
-	path = nav.get_simple_path(global_position, target_pos, true)
+	if playerDetectionZone.player_in_view():
+		playerPos = target_pos
+		path = nav.get_simple_path(global_position, target_pos, true)
 
 
 func _on_Hurtbox_area_entered(area):
