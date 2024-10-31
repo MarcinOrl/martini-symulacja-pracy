@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends RigidBody2D
 
 export var speed = 100
 export var color = Color(255, 255, 255)
@@ -80,7 +80,7 @@ func move_to_target():
 			return
 		var direction = global_position.direction_to(path[0])
 		velocity = direction * speed
-		velocity = move_and_slide(velocity)
+		applied_force = velocity
 		
 func get_target_path(target_pos):
 	if playerDetectionZone.player_in_view():
