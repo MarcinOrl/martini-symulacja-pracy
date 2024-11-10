@@ -351,7 +351,8 @@ states/gunWalk/position = Vector2( 537, 429 )
 states/walking/node = SubResource( 8 )
 states/walking/position = Vector2( 679, 108 )
 transitions = [ "Idle", "walking", SubResource( 9 ), "walking", "Idle", SubResource( 10 ), "Idle", "gunOut", SubResource( 27 ), "gunIdle", "gunWalk", SubResource( 31 ), "gunWalk", "gunIn", SubResource( 32 ), "gunWalk", "gunShot", SubResource( 33 ), "gunIdle", "gunShot", SubResource( 34 ), "gunOut", "gunIdle", SubResource( 37 ), "gunIdle", "gunIn", SubResource( 38 ), "gunIn", "Idle", SubResource( 39 ), "gunShot", "gunWalk", SubResource( 40 ), "gunShot", "gunIdle", SubResource( 41 ), "gunWalk", "gunIdle", SubResource( 42 ) ]
-graph_offset = Vector2( 58, 244 )
+start_node = "Idle"
+graph_offset = Vector2( -126, 17 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=16]
 

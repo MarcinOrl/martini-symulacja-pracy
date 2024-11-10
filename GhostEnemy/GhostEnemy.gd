@@ -1,6 +1,6 @@
-extends KinematicBody2D
+extends RigidBody2D
 
-export var speed = 100
+export var speed = 2500
 export var color = Color(255, 255, 255)
 
 enum {
@@ -44,6 +44,7 @@ func _physics_process(delta):
 	if not playerDetectionZone.player_in_view() and state == CHASE:
 		state = STAY
 		MusicPlayer.stopChaseMusic()
+		applied_force = Vector2.ZERO
 	hurtbox.global_rotation = self.global_rotation
 	match state:
 		STAY:
@@ -80,11 +81,12 @@ func move_to_target():
 			return
 		var direction = global_position.direction_to(path[0])
 		velocity = direction * speed
-		velocity = move_and_slide(velocity)
+		applied_force = velocity
 		
 func get_target_path(target_pos):
-	playerPos = target_pos
-	path = nav.get_simple_path(global_position, target_pos, true)
+	if playerDetectionZone.player_in_view():
+		playerPos = target_pos
+		path = nav.get_simple_path(global_position, target_pos, true)
 
 
 func _on_Hurtbox_area_entered(area):
@@ -103,6 +105,7 @@ func _on_Hurtbox_area_entered(area):
 
 func _on_Stats_no_health():
 	died = true
+	applied_force = Vector2.ZERO
 	MusicPlayer.stopChaseMusic()
 	hitbox.queue_free()
 	hurtbox.queue_free()
