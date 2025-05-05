@@ -16,6 +16,11 @@ var knockback = Vector2.ZERO
 var stats = PlayerStats
 var reload = false
 var hitParticle = load("res://Player/PlayerHurtParticle.tscn")
+var can_sprint = true
+var stamina = 5.0
+var regen_delay = 1.0
+var stamina_timer = 0.0
+var sprint_multiplier = 1.4
 
 onready var animationPlayer = $AnimationPlayer
 onready var animationTree = $AnimationTree
@@ -55,9 +60,29 @@ func move_state(delta):
 	input_vector.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
 	input_vector = input_vector.normalized()
 	
+	var sprinting = false
+	
+	if Input.is_action_pressed("ui_sprint") and can_sprint and stamina > 0:
+		sprinting = true
+		stamina -= delta
+		stamina_timer = 0.0
+		
+	if stamina <= 0:
+		can_sprint = false
+		
+	if !sprinting:
+		stamina_timer += delta
+		if stamina_timer >= regen_delay:
+			stamina = min(stamina + delta, 5.0)
+			if stamina > 0:
+				can_sprint = true
+	
 	if input_vector != Vector2.ZERO:
 		animationState.travel("walking")
-		apply_central_impulse(input_vector*90)
+		if !sprinting:
+			apply_central_impulse(input_vector*90)
+		else:
+			apply_central_impulse(input_vector*sprint_multiplier*90)			
 	else:
 		animationState.travel("Idle")
 	
